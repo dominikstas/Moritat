@@ -1,0 +1,96 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// Token types
+typedef enum {
+    IDENTIFIER,
+    INTEGER,
+    PLUS,
+    MINUS,
+    MULTIPLY,
+    DIVIDE,
+    SEMICOLON,
+    END_OF_FILE
+} TokenType;
+
+// Token structure
+typedef struct {
+    TokenType type;
+    char lexeme[100];
+} Token;
+
+// Lexer function
+Token getNextToken(FILE* fp) {
+    Token token;
+    char ch = fgetc(fp);
+
+    while (isspace(ch)) {
+        ch = fgetc(fp);  // Skip whitespace
+    }
+
+    if (ch == EOF) {
+        token.type = END_OF_FILE;
+        strcpy(token.lexeme, "");
+        return token;
+    }
+
+    if (isalpha(ch)) {
+        token.type = IDENTIFIER;
+        int i = 0;
+        while (isalnum(ch) || ch == '_') {
+            token.lexeme[i++] = ch;
+            ch = fgetc(fp);
+        }
+        token.lexeme[i] = '\0';
+    } else if (isdigit(ch)) {
+        token.type = INTEGER;
+        int i = 0;
+        while (isdigit(ch)) {
+            token.lexeme[i++] = ch;
+            ch = fgetc(fp);
+        }
+        token.lexeme[i] = '\0';
+    } else {
+        // Handle other token types (e.g., +, -, *, /, ;)
+    }
+
+    return token;
+}
+
+// Parser function
+void parse(FILE* fp) {
+    Token token;
+    do {
+        token = getNextToken(fp);
+
+        // Perform parsing actions based on the token type
+        switch (token.type) {
+            case IDENTIFIER:
+                printf("Identifier: %s\n", token.lexeme);
+                break;
+            case INTEGER:
+                printf("Integer: %s\n", token.lexeme);
+                break;
+            // Handle other token types
+            case END_OF_FILE:
+                printf("End of file\n");
+                break;
+            default:
+                break;
+        }
+    } while (token.type != END_OF_FILE);
+}
+
+int main() {
+    FILE* fp = fopen("example.adb", "r");
+    if (fp == NULL) {
+        perror("Error opening file");
+        return 1;
+    }
+
+    parse(fp);
+
+    fclose(fp);
+    return 0;
+}
