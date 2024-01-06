@@ -3,38 +3,36 @@
 #include <string.h>
 
 int main(int argc, char *argv[]) {
-    // Sprawdzenie, czy podano poprawną liczbę argumentów
+    // Check the arguments
     if (argc != 2) {
-        fprintf(stderr, "Uzycie: %s <plik>\n", argv[0]);
+        fprintf(stderr, "Usage: %s <file>\n", argv[0]);
         return 1;
     }
 
-    // Pobranie nazwy pliku Ada z argumentów
+    // Get Ada file name (with .adb)
     const char* adaFileName = argv[1];
 
-    // Sprawdzenie czy podany plik ma rozszerzenie .adb
+    // Check the extension
     const char* extension = ".adb";
     if (strstr(adaFileName, extension) == NULL) {
-        fprintf(stderr, "Bledny format pliku. Podaj plik z rozszerzeniem .adb.\n");
+        fprintf(stderr, "Invalid file format. Please provide a file with the .adb extension.\n");
         return 1;
     }
 
-    // Usunięcie rozszerzenia .adb
+    // Get Ada file name without .adb
     char executableName[100];
     snprintf(executableName, sizeof(executableName), "./%.*s", (int)(strlen(adaFileName) - strlen(extension)), adaFileName);
 
-    // Komenda do kompilacji programu w Ada
+    // Compile
     char compileCommand[100];
     snprintf(compileCommand, sizeof(compileCommand), "gnatmake %s", adaFileName);
-
-    // Uruchomienie komendy za pomocą funkcji system
     int result = system(compileCommand);
 
-    // Sprawdzenie wyniku wykonania komendy
+    // Check if compile correctly
     if (result == 0) {
-        printf("Kompilacja zakonczona pomyslnie. Uruchom '%s'\n", executableName);
+        printf("Compilation successful. Run '%s'\n", executableName);
     } else {
-        printf("Blad podczas kompilacji.\n");
+        printf("Error during compilation.\n");
     }
 
     return 0;
