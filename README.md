@@ -17,7 +17,7 @@ To build Moritat, follow these steps:
 
 1. Clone the Moritat GitHub repository:
    ```bash
-   git clone https://github.com/dominikstas/moritat.git
+   git clone https://github.com/dominikstas/Moritat.git
    cd moritat
    ```
 
