@@ -1,101 +1,67 @@
-# Moritat - Ada Development Assistant
+**Moritat - Your Compiling Best Friend**
 
-## Introduction
-Welcome to Moritat, your Ada best friend! Moritat is a command-line tool designed to assist developers working with the Ada programming language. Ada is a statically typed, high-level programming language known for its reliability and safety features. While not as widely used as some other languages, Ada is especially popular in safety-critical systems, aerospace, and military applications.
+Moritat is a simple command-line tool designed to assist with compiling and running programs written in Ada, (kinda) Python, C, and C++. It aims to provide a user-friendly interface for common development tasks such as compilation and directory navigation.
 
-Moritat aims to simplify and streamline the Ada development process, providing essential commands for compilation, file management, and project navigation. Whether you are a seasoned Ada developer or just starting with the language, Moritat can be a helpful companion in your Ada development journey.
+### Features:
 
-## Getting Started
+1. **Supported File Formats:**
+   - Moritat supports Ada (.adb), Python (.py), C (.c), and C++ (.cpp) file formats.
 
-### Prerequisites
-Before using Moritat, ensure you have the following installed on your system:
-- Ada Compiler (GNAT)
-- CMake
+2. **Compile and Run:**
+   - The `compile` command allows you to compile and run programs based on their file extension.
+   - For Ada files, Moritat uses `gnatmake` to compile and provides instructions for running the Ada project.
+   - For Python files, Moritat suggests using `python` to run the script.
+   - For C and C++ files, Moritat uses `gcc` for compilation and provides instructions for running the executable.
 
-### Building Moritat
-To build Moritat, follow these steps:
+3. **List Files in Current Directory:**
+   - The `ls` command lists all files in the current directory.
 
-1. Clone the Moritat GitHub repository:
-   ```bash
-   git clone https://github.com/dominikstas/Moritat.git
-   cd moritat
-   ```
+4. **Change Directory:**
+   - The `cd` command allows you to change the current directory.
 
-2. Create a build directory and navigate into it:
-   ```bash
-   mkdir build
-   cd build
-   ```
+5. **Help Command:**
+   - The `help` command displays a list of available commands and their usage.
 
-3. Generate build files using CMake:
-   ```bash
-   cmake ..
-   ```
+6. **Exit:**
+   - The `exit` command terminates the Moritat program.
 
-4. Build the Moritat executable:
-   ```bash
-   make
-   ```
+### How to Use:
 
-5. Run Moritat:
-   ```bash
-   ./moritat
-   ```
+1. **Compile and Run:**
+   - To compile and run a program, use the `compile` command followed by the file name.
+     ```
+     compile filename.adb
+     ```
 
-## Features and Commands
+2. **List Files in Current Directory:**
+   - To list files in the current directory, use the `ls` command.
+     ```
+     ls
+     ```
 
-### Welcome Message
-Upon launching Moritat, you will be greeted with a welcome message indicating that Moritat is ready to assist you in your Ada development.
+3. **Change Directory:**
+   - To change the current directory, use the `cd` command followed by the desired directory.
+     ```
+     cd /path/to/directory
+     ```
 
-```plaintext
-Welcome to Moritat - Your Ada best friend!
-```
+4. **Display Help:**
+   - To view a list of available commands and their usage, use the `help` command.
+     ```
+     help
+     ```
 
-### Changing Directory
-Moritat allows you to change the current working directory using the `cd` command. Simply provide the desired directory as an argument.
+5. **Exit Program:**
+   - To exit Moritat, use the `exit` command.
 
-```plaintext
-Moritat> cd /path/to/directory
-```
+### Supported Platforms:
 
-### Listing Files
-The `ls` command displays the files in the current working directory.
+Moritat is written in standard C and should work on various platforms with a C compiler and standard libraries. It has been tested on Linux Arch system.
 
-```plaintext
-Moritat> ls
-Files in current directory:
-file1.adb
-file2.adb
-...
+### Building Moritat:
 
-```
+Moritat can be compiled using a standard C compiler such as `gcc`. No additional dependencies are required.
 
-### Compiling Ada Files
-Moritat provides a convenient way to compile Ada files using the `compile` command. Specify the Ada file you want to compile, and Moritat will handle the compilation process.
-
-```plaintext
-Moritat> compile filename.adb
-```
-
-Moritat checks for the `.adb` extension and uses the GNAT compiler to compile the specified Ada file. Upon successful compilation, Moritat provides instructions on how to run the compiled project.
-
-### Help Command
-The `help` command displays a list of available commands and their descriptions to assist you in using Moritat effectively.
-
-```plaintext
-Moritat> help
-Available commands:
-  compile <filename.adb> - Compile Ada file
-  ls - List files in the current directory
-  cd <directory> - Change current directory
-  help - Display this help message
-  exit - Exit Moritat
-```
-
-### Exiting Moritat
-To exit Moritat, simply use the `exit` command.
-
-```plaintext
-Moritat> exit
-```
+### Contributors:
+Feel free to contribute to the project by submitting bug reports, feature requests, or pull requests on the GitHub repository.
 
