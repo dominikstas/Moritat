@@ -62,9 +62,9 @@ void compileAndRun(char *filename) {
         }
     } else if (strcmp(extension, ".py") == 0) {
         // Python run
-        printf("You can run the Python script using: python %s\n", filename);
-    } else if (strcmp(extension, ".c") == 0 || strcmp(extension, ".cpp") == 0) {
-        // C or C++ compilation
+        printf("You can run the Python script using: python %s\n", filename);}
+    else if (strcmp(extension, ".c") == 0) {
+        // C code
         char compileCommand[MAX_PATH_LENGTH + 20];
         snprintf(compileCommand, sizeof(compileCommand), "gcc %s -o %s.out", filename, filename);
         int result = system(compileCommand);
@@ -73,8 +73,22 @@ void compileAndRun(char *filename) {
         if (result == 0) {
             printf("Compilation successful. You can run the executable using: ./%s.out\n", filename);
         } else {
-            printf("Error during C/C++ compilation.\n");
+            printf("Error during C compilation.\n");
         }
+
+    } else if (strcmp(extension, ".cpp") == 0) {
+        // C++ code
+        char compileCommand[MAX_PATH_LENGTH + 20];
+        snprintf(compileCommand, sizeof(compileCommand), "g++ %s -o %s.out", filename, filename);
+        int result = system(compileCommand);
+
+        // Check if compiled correctly
+        if (result == 0) {
+            printf("Compilation successful. You can run the executable using: ./%s.out\n", filename);
+        } else {
+            printf("Error during C++ compilation.\n");
+        }
+
     } else {
         fprintf(stderr, "Unsupported file extension. Moritat currently supports Ada, Python, C, and C++.\n");
     }
