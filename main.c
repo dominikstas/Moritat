@@ -1,8 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <dirent.h>
+#include "simple/simple.h"
 
 #define MAX_PATH_LENGTH 256
 
@@ -62,8 +58,8 @@ void compileAndRun(char *filename) {
         }
     } else if (strcmp(extension, ".py") == 0) {
         // Python run
-        printf("You can run the Python script using: python %s\n", filename);}
-    else if (strcmp(extension, ".c") == 0) {
+        printf("You can run the Python script using: python %s\n", filename);
+    } else if (strcmp(extension, ".c") == 0) {
         // C code
         char compileCommand[MAX_PATH_LENGTH + 20];
         snprintf(compileCommand, sizeof(compileCommand), "gcc %s -o %s.out", filename, filename);
@@ -103,7 +99,7 @@ int main(int argc, char *argv[]) {
 
     // Infinite loop for user interaction
     while (1) {
-        char userCommand[100];
+        char userCommand[MAX_PATH_LENGTH];
         printf("Moritat> ");
         fgets(userCommand, sizeof(userCommand), stdin);
 
@@ -136,7 +132,7 @@ int main(int argc, char *argv[]) {
             break;
         } else {
             // Handle other commands or provide feedback
-            printf("Unknown command or invalid syntax.\n");
+            execute(userCommand);
         }
     }
 

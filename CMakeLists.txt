@@ -3,4 +3,4 @@ project(Moritat C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(moritat main.c)
+add_executable(moritat main.c simple/simple.c)
