@@ -56,7 +56,7 @@ Moritat is a simple command-line tool designed to assist with compiling and runn
 
 ### Supported Platforms:
 
-Moritat is written in standard C and should work on various platforms with a C compiler and standard libraries. It has been tested on Linux Arch system.
+Moritat is written in standard C and should work on various platforms with a C compiler and standard libraries. It has been tested on Linux Arch system. It uses 'simple' which is terminal, that I write for my other projects (Swallow, Neutrino)
 
 ### Building Moritat:
 
