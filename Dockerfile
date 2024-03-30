@@ -1,11 +1,11 @@
-FROM gcc:latest
+FROM ubuntu:latest
 
-COPY . /usr/src/moritat
+WORKDIR /app
 
-WORKDIR /usr/src/moritat
+COPY . .
 
-//to be fixed
-RUN apt-get update && apt-get install -y cmake
+RUN apt-get update && apt-get install -y \
+    cmake 
 
 RUN cmake .
 
