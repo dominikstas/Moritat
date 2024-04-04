@@ -1,6 +1,6 @@
 **Moritat - Your Compiling Best Friend**
 
-Moritat is a simple command-line tool designed to assist with compiling and running programs written in Ada, (kinda) Python, C, and C++. It aims to provide a user-friendly interface for common development tasks such as compilation and directory navigation.
+Moritat is a simple command-line tool designed to assist with compiling and running programs written in Ada, C, and C++. It aims to provide a user-friendly interface for common development tasks such as compilation and directory navigation.
 
 ### Features:
 
@@ -10,7 +10,6 @@ Moritat is a simple command-line tool designed to assist with compiling and runn
 2. **Compile and Run:**
    - The `compile` command allows you to compile and run programs based on their file extension.
    - For Ada files, Moritat uses `gnatmake` to compile and provides instructions for running the Ada project.
-   - For Python files, Moritat suggests using `python` to run the script.
    - For C and C++ files, Moritat uses `gcc` for compilation and provides instructions for running the executable.
 
 3. **List Files in Current Directory:**

@@ -30,7 +30,7 @@ void listFilesInCurrentDirectory() {
 
 void displayHelp() {
     printf("Available commands:\n");
-    printf("  compile <filename.adb|filename.py|filename.c|filename.cpp> - Compile the specified file\n");
+    printf("  compile <filename.adb|filename.c|filename.cpp> - Compile the specified file\n");
     printf("  ls - List files in the current directory\n");
     printf("  cd <directory> - Change current directory\n");
     printf("  help - Display this help message\n");
@@ -57,7 +57,7 @@ void compileAndRun(char *filename) {
             printf("Error during Ada compilation.\n");
         }
     } else if (strcmp(extension, ".py") == 0) {
-        // Python run
+        // Python info
         printf("You can run the Python script using: python %s\n", filename);
     } else if (strcmp(extension, ".c") == 0) {
         // C code
@@ -86,7 +86,7 @@ void compileAndRun(char *filename) {
         }
 
     } else {
-        fprintf(stderr, "Unsupported file extension. Moritat currently supports Ada, Python, C, and C++.\n");
+        fprintf(stderr, "Unsupported file extension. Moritat currently supports Ada, C, and C++.\n");
     }
 }
 
