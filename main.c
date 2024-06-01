@@ -1,4 +1,9 @@
 #include "simple/simple.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <dirent.h>
 
 #define MAX_PATH_LENGTH 256
 
@@ -7,7 +12,9 @@ void displayWelcomeMessage() {
 }
 
 void changeToUserHomeDirectory() {
-    chdir(getenv("HOME"));
+    if (chdir(getenv("HOME")) != 0) {
+        perror("Error changing to home directory");
+    }
 }
 
 void listFilesInCurrentDirectory() {
@@ -37,7 +44,43 @@ void displayHelp() {
     printf("  exit - Exit Moritat\n");
 }
 
-void compileAndRun(char *filename) {
+void compileAdaFile(const char *filename) {
+    char compileCommand[MAX_PATH_LENGTH + 20];
+    snprintf(compileCommand, sizeof(compileCommand), "gnatmake %s", filename);
+    int result = system(compileCommand);
+
+    if (result == 0) {
+        printf("Compilation successful. You can run the Ada project using: ./%s\n", filename);
+    } else {
+        printf("Error during Ada compilation.\n");
+    }
+}
+
+void compileCFile(const char *filename) {
+    char compileCommand[MAX_PATH_LENGTH + 20];
+    snprintf(compileCommand, sizeof(compileCommand), "gcc %s -o %s.out", filename, filename);
+    int result = system(compileCommand);
+
+    if (result == 0) {
+        printf("Compilation successful. You can run the executable using: ./%s.out\n", filename);
+    } else {
+        printf("Error during C compilation.\n");
+    }
+}
+
+void compileCPPFile(const char *filename) {
+    char compileCommand[MAX_PATH_LENGTH + 20];
+    snprintf(compileCommand, sizeof(compileCommand), "g++ %s -o %s.out", filename, filename);
+    int result = system(compileCommand);
+
+    if (result == 0) {
+        printf("Compilation successful. You can run the executable using: ./%s.out\n", filename);
+    } else {
+        printf("Error during C++ compilation.\n");
+    }
+}
+
+void compileAndRun(const char *filename) {
     const char *extension = strrchr(filename, '.');
     if (extension == NULL) {
         fprintf(stderr, "Invalid file format. Please provide a file with a recognized extension.\n");
@@ -45,95 +88,54 @@ void compileAndRun(char *filename) {
     }
 
     if (strcmp(extension, ".adb") == 0) {
-        // Ada compilation
-        char compileCommand[MAX_PATH_LENGTH + 20];
-        snprintf(compileCommand, sizeof(compileCommand), "gnatmake %s", filename);
-        int result = system(compileCommand);
-
-        // Check if compiled correctly
-        if (result == 0) {
-            printf("Compilation successful. You can run the Ada project using: ./%s\n", filename);
-        } else {
-            printf("Error during Ada compilation.\n");
-        }
+        compileAdaFile(filename);
     } else if (strcmp(extension, ".py") == 0) {
-        // Python info
         printf("You can run the Python script using: python %s\n", filename);
     } else if (strcmp(extension, ".c") == 0) {
-        // C code
-        char compileCommand[MAX_PATH_LENGTH + 20];
-        snprintf(compileCommand, sizeof(compileCommand), "gcc %s -o %s.out", filename, filename);
-        int result = system(compileCommand);
-
-        // Check if compiled correctly
-        if (result == 0) {
-            printf("Compilation successful. You can run the executable using: ./%s.out\n", filename);
-        } else {
-            printf("Error during C compilation.\n");
-        }
-
+        compileCFile(filename);
     } else if (strcmp(extension, ".cpp") == 0) {
-        // C++ code
-        char compileCommand[MAX_PATH_LENGTH + 20];
-        snprintf(compileCommand, sizeof(compileCommand), "g++ %s -o %s.out", filename, filename);
-        int result = system(compileCommand);
-
-        // Check if compiled correctly
-        if (result == 0) {
-            printf("Compilation successful. You can run the executable using: ./%s.out\n", filename);
-        } else {
-            printf("Error during C++ compilation.\n");
-        }
-
+        compileCPPFile(filename);
     } else {
-        fprintf(stderr, "Unsupported file extension. Moritat currently supports Ada, C, and C++.\n");
+        fprintf(stderr, "Unsupported file extension. Moritat currently supports Ada, C, C++, and Python.\n");
+    }
+}
+
+void executeCommand(const char *userCommand) {
+    if (strncmp(userCommand, "compile", 7) == 0) {
+        char filename[MAX_PATH_LENGTH];
+        sscanf(userCommand, "compile %s", filename);
+        compileAndRun(filename);
+    } else if (strcmp(userCommand, "ls") == 0) {
+        listFilesInCurrentDirectory();
+    } else if (strncmp(userCommand, "cd", 2) == 0) {
+        char directory[MAX_PATH_LENGTH];
+        sscanf(userCommand, "cd %s", directory);
+        if (chdir(directory) != 0) {
+            perror("Error changing directory");
+        }
+    } else if (strcmp(userCommand, "help") == 0) {
+        displayHelp();
+    } else if (strcmp(userCommand, "exit") == 0) {
+        exit(0);
+    } else {
+        fprintf(stderr, "Unknown command: %s\n", userCommand);
     }
 }
 
 int main(int argc, char *argv[]) {
-    // Display welcome message
     displayWelcomeMessage();
-
-    // Change to user's home directory
     changeToUserHomeDirectory();
 
-    // Infinite loop for user interaction
     while (1) {
         char userCommand[MAX_PATH_LENGTH];
         printf("Moritat> ");
-        fgets(userCommand, sizeof(userCommand), stdin);
-
-        // Remove trailing newline character
-        userCommand[strcspn(userCommand, "\n")] = 0;
-
-        // Check for various commands
-        if (strncmp(userCommand, "compile", 7) == 0) {
-            // Extract the file name
-            char filename[MAX_PATH_LENGTH];
-            sscanf(userCommand, "compile %s", filename);
-
-            // Compile and run based on the file extension
-            compileAndRun(filename);
-        } else if (strncmp(userCommand, "ls", 2) == 0) {
-            // List files in the current directory
-            listFilesInCurrentDirectory();
-        } else if (strncmp(userCommand, "cd", 2) == 0) {
-            // Change current directory
-            char directory[MAX_PATH_LENGTH];
-            sscanf(userCommand, "cd %s", directory);
-            if (chdir(directory) != 0) {
-                perror("Error changing directory");
-            }
-        } else if (strncmp(userCommand, "help", 4) == 0) {
-            // Display help
-            displayHelp();
-        } else if (strncmp(userCommand, "exit", 4) == 0) {
-            // Exit the program
-            break;
-        } else {
-            // Handle other commands or provide feedback
-            execute(userCommand);
+        if (fgets(userCommand, sizeof(userCommand), stdin) == NULL) {
+            perror("Error reading input");
+            continue;
         }
+
+        userCommand[strcspn(userCommand, "\n")] = 0;
+        executeCommand(userCommand);
     }
 
     return 0;
